@@ -6,10 +6,10 @@ WITH
 -- ============================================
 instructors AS (
     SELECT 1 AS instructor_id, 'Alice Johnson' AS instructor_name UNION ALL
-    SELECT 2, 'Carlos P‚rez' UNION ALL
+    SELECT 2, 'Carlos Pï¿½rez' UNION ALL
     SELECT 3, 'Mei Tan' UNION ALL
     SELECT 4, 'John Smith' UNION ALL
-    SELECT 5, 'Laura G¢mez'
+    SELECT 5, 'Laura Gï¿½mez'
 ),
 
 -- ============================================
