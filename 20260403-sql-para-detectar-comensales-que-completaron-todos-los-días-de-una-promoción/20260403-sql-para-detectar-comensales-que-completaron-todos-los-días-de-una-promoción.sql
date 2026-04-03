@@ -1,4 +1,26 @@
-﻿-- Calendario base: secuencia limpia de fechas válidas para el análisis.
+﻿/* =====================================================================================================
+   [ES] AVISO IMPORTANTE – NOMBRES FICTICIOS Y USO PEDAGÓGICO ÚNICAMENTE
+   -----------------------------------------------------------------------------------------------------
+   Los nombres, rutas, entidades, tablas, columnas y ejemplos utilizados en este script son TOTALMENTE 
+   FICTICIOS. Cualquier parecido con personas, empresas, bases de datos o entornos reales es pura 
+   coincidencia.
+   Este script se proporciona EXCLUSIVAMENTE con fines pedagógicos y demostrativos. 
+   NO debe ejecutarse en ambientes de producción bajo ninguna circunstancia.
+   No se garantiza que este script evite alteraciones, inserciones, eliminaciones o modificaciones de 
+   datos en sistemas reales. El autor no asume responsabilidad por el uso indebido del contenido.
+   =====================================================================================================
+   [EN] IMPORTANT NOTICE – FICTIONAL NAMES AND EDUCATIONAL USE ONLY
+   -----------------------------------------------------------------------------------------------------
+   The names, paths, entities, tables, columns, and examples used in this script are COMPLETELY 
+   FICTIONAL. Any resemblance to real persons, companies, databases, or environments is purely 
+   coincidental.
+   This script is provided SOLELY for educational and demonstration purposes. 
+   It MUST NOT be executed in production environments under any circumstances.
+   There is no guarantee that this script will prevent alteration, insertion, deletion, or modification 
+   of data in real systems. The author assumes no responsibility for misuse of this content.
+   ===================================================================================================== */
+
+-- Calendario base: secuencia limpia de fechas válidas para el análisis.
 -- Define el rango oficial (2024‑01‑01 → 2024‑01‑07), independiente de la asistencia.
 WITH cte_fechas AS (
     SELECT CAST('2024-01-01' AS date) AS fecha
