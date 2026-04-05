@@ -20,8 +20,12 @@
    of data in real systems. The author assumes no responsibility for misuse of this content.
    ===================================================================================================== */
 
--- Calendario base: secuencia limpia de fechas válidas para el análisis.
--- Define el rango oficial (2024‑01‑01 → 2024‑01‑07), independiente de la asistencia.
+-- [ES] Calendario base: secuencia limpia de fechas válidas para el análisis.
+-- [ES] Define el rango oficial (2024‑01‑01 → 2024‑01‑07), independiente de la asistencia.
+
+-- [EN] Base calendar: clean sequence of valid dates for the analysis.
+-- [EN] Defines the official range (2024‑01‑01 → 2024‑01‑07), independent from attendance data.
+
 WITH cte_fechas AS (
     SELECT CAST('2024-01-01' AS date) AS fecha
     UNION ALL
@@ -30,8 +34,12 @@ WITH cte_fechas AS (
     WHERE fecha < '2024-01-07'
 ),
 
--- Asistencia cruda: datos reales con duplicados, ruido y fechas fuera de rango.
--- No se corrige nada aquí; el pipeline debe ser robusto ante basura.
+-- [ES] Asistencia cruda: datos reales con duplicados, ruido y fechas fuera de rango.
+-- [ES] No se corrige nada aquí; el pipeline debe ser robusto ante basura.
+
+-- [EN] Raw attendance: real-world data with duplicates, noise, and out-of-range dates.
+-- [EN] Nothing is fixed here; the pipeline must remain robust in the presence of garbage input.
+
 cte_asistencia AS (
     SELECT *
     FROM (VALUES
@@ -51,21 +59,29 @@ cte_asistencia AS (
     ) AS A(fecha, comensal)
 ),
 
--- Limpieza mínima: una fila por (fecha, comensal). No altera el calendario.
+-- [ES] Limpieza mínima: una fila por (fecha, comensal). No altera el calendario.
+-- [EN] Minimal cleanup: one row per (date, attendee). Does not modify the calendar.
+
 cte_distinct AS (
     SELECT DISTINCT fecha, comensal
     FROM cte_asistencia
 ),
 
--- Línea de tiempo oficial: ordinal 1..7 basado solo en el calendario limpio.
+-- [ES] Línea de tiempo oficial: ordinal 1..7 basado solo en el calendario limpio.
+-- [EN] Official timeline: ordinal 1..7 based solely on the clean calendar.
+
 cte_orden AS (
     SELECT fecha,
            ROW_NUMBER() OVER (ORDER BY fecha) AS dia_ordinal
     FROM cte_fechas
 ),
 
--- Racha acumulada por comensal: cuántas veces ha asistido hasta cada fecha.
--- Se compara luego contra el ordinal para detectar asistencia perfecta.
+-- [ES] Racha acumulada por comensal: cuántas veces ha asistido hasta cada fecha.
+-- [ES] Se compara luego contra el ordinal para detectar asistencia perfecta.
+
+-- [EN] Cumulative streak per attendee: how many times they have attended up to each date.
+-- [EN] Later compared against the ordinal to detect perfect attendance.
+
 cte_win AS (
     SELECT
         a.fecha,
@@ -80,15 +96,21 @@ cte_win AS (
     JOIN cte_orden o ON o.fecha = a.fecha
 ),
 
--- Sobrevivientes: comensales cuyo acumulado coincide con el ordinal.
+-- [ES] Sobrevivientes: comensales cuyo acumulado coincide con el ordinal.
+-- [EN] Survivors: attendees whose cumulative count matches the ordinal.
+
 cte_descarte AS (
     SELECT fecha, comensal
     FROM cte_win
     WHERE acumulado = dia_ordinal
 )
 
--- Resultado final: por día, cuántos siguen con asistencia perfecta
--- y lista separada por comas de esos comensales.
+-- [ES] Resultado final: por día, cuántos siguen con asistencia perfecta
+-- [ES] y lista separada por comas de esos comensales.
+
+-- [EN] Final result: for each day, how many still maintain perfect attendance
+-- [EN] and a comma‑separated list of those attendees.
+
 SELECT
     f.fecha,
     COALESCE(COUNT(d.comensal), 0) AS comensales_en_todos_los_dias,
